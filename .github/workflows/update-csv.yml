@@ -7,6 +7,7 @@ on:
     - cron: '5 12 * * *'
     - cron: '5 14 * * *'
     - cron: '5 19 * * *'
+    - cron: '5 22 * * *'
 
   # 手动触发（可选）
   workflow_dispatch:
@@ -31,50 +32,5 @@ jobs:
 
     - name: Run Python script to update GitHub file
       env:
-        MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # 从 GitHub Secrets 获取 Token
-      run: |
-        python3 <<EOF
-import os
-from github import Github
-import requests
-
-# 获取 GitHub Token（使用自定义 secret）
-GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN")  # 获取环境变量
-
-if GITHUB_TOKEN is None:
-    print("Error: MY_GITHUB_TOKEN is not set.")
-    exit(1)
-
-REPO_NAME = "jzhou9096/jilianip"  # 替换为你的仓库
-FILE_PATH = "addtro.csv"  # 替换为文件路径（如 addresses.csv）
-CSV_URL = "https://addcsv.sosorg.nyc.mn/addressesapi.csv?token=ZYSS"  # 替换为目标网页 URL
-
-def fetch_webpage_content(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.text
-    except requests.RequestException as e:
-        print(f"Error fetching CSV: {e}")
-        return None
-
-def write_to_github(content):
-    g = Github(GITHUB_TOKEN)
-    repo = g.get_repo(REPO_NAME)
-    try:
-        file = repo.get_contents(FILE_PATH)
-        repo.update_file(FILE_PATH, "Updated CSV content", content, file.sha, branch="main")
-        print("File updated successfully on GitHub.")
-    except Exception as e:
-        print(f"Error writing to GitHub: {e}")
-
-def main():
-    print("Fetching CSV content...")
-    content = fetch_webpage_content(CSV_URL)
-    if content:
-        print("Writing content to GitHub...")
-        write_to_github(content)
-
-if __name__ == "__main__":
-    main()
-EOF
+        MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # 使用自定义的 Token
+      run: python script.py
