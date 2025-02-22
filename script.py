@@ -1,21 +1,24 @@
 import os
+import requests  # 确保导入 requests 模块
 from github import Github
 
 # 获取 GitHub Token（使用自定义 secret）
-GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN")  # 获取环境变量
+GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN")
 
 if GITHUB_TOKEN is None:
     print("Error: MY_GITHUB_TOKEN is not set.")
     exit(1)
 
-REPO_NAME = "jzhou9096/jilianip"  # 替换为你的仓库
-FILE_PATH = "addtro.csv"  # 替换为文件路径（如 addresses.csv）
-CSV_URL = "https://addcsv.sosorg.nyc.mn/addressesapi.csv?token=ZYSS"  # 替换为目标网页 URL
+REPO_NAME = "jzhou9096/jilianip"
+FILE_PATH = "addtro.csv"
+CSV_URL = "https://addcsv.sosorg.nyc.mn/addressesapi.csv?token=ZYSS"
 
 def fetch_webpage_content(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
+        if not response.text:
+            print(f"Warning: Empty content from {url}")
         return response.text
     except requests.RequestException as e:
         print(f"Error fetching CSV: {e}")
