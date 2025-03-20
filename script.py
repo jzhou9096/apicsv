@@ -45,7 +45,7 @@ def write_to_github(content):
 
 def main():
     print("Fetching CSV content...")
-    content = fetch_webpage_content(CSV_URL)
+    content = fetch_webpage_content(WEBPAGE_URL)
     if content:
         print("Writing content to GitHub...")
         write_to_github(content)
