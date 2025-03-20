@@ -4,14 +4,23 @@ from github import Github
 
 # 获取 GitHub Token（使用自定义 secret）
 GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN")
-
-if GITHUB_TOKEN is None:
+if not GITHUB_TOKEN:
     print("Error: MY_GITHUB_TOKEN is not set.")
     exit(1)
 
-REPO_NAME = "jzhou9096/jilianip"
-FILE_PATH = "addtro.csv"
-CSV_URL = "https://addcsv.sosorg.nyc.mn/addressesapi.csv?token=ZYSS"
+# 从环境变量获取，未设置则直接报错
+REPO_NAME = os.getenv("REPO_NAME")
+FILE_PATH = os.getenv("FILE_PATH")
+WEBPAGE_URL = os.getenv("WEBPAGE_URL")
+
+# 调试输出
+print(f"DEBUG: REPO_NAME={REPO_NAME}")
+print(f"DEBUG: FILE_PATH={FILE_PATH}")
+print(f"DEBUG: WEBPAGE_URL={WEBPAGE_URL}")
+
+if not REPO_NAME or not FILE_PATH or not WEBPAGE_URL:
+    print("Error: One or more required environment variables (REPO_NAME, FILE_PATH, WEBPAGE_URL) are not set.")
+    exit(1)
 
 def fetch_webpage_content(url):
     try:
