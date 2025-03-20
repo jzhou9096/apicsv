@@ -30,7 +30,14 @@ jobs:
         pip install requests
         pip install PyGithub  # 安装所需的 Python 包
 
-    - name: Run Python script to update GitHub file
+    - name: Run script
       env:
-        MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # 使用自定义的 Token
-      run: python script.py
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          REPO_NAME: ${{ secrets.REPO_NAME }}
+          FILE_PATH: ${{ secrets.FILE_PATH }}
+          WEBPAGE_URL: ${{ secrets.WEBPAGE_URL }}
+      run: |
+          echo "DEBUG: REPO_NAME=${REPO_NAME}"
+          echo "DEBUG: FILE_PATH=${FILE_PATH}"
+          echo "DEBUG: WEBPAGE_URL=${WEBPAGE_URL}"
+          python script.py
